@@ -76,7 +76,7 @@ WORKDIR /var/www/php
 # Expose the port nginx is reachable on
 EXPOSE 80 443
 
-COPY ./start.sh /start.sh
-RUN chmod +x /start.sh
+COPY ./init.sh /init.sh
+RUN chmod +x /init.sh
 # Let supervisord start nginx & php-fpm
-CMD ["/bin/sh", "-c", "/start.sh"]
+CMD ["/bin/sh", "-c", "/init.sh"]
