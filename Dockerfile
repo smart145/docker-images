@@ -1,82 +1,14 @@
-FROM alpine:3.11
-LABEL Maintainer="eliurkis@gmail.com" \
-      Description="Container - Nginx 1.16 & PHP-FPM 7.x based on Alpine Linux."
-ENV stdout /dev/stdout
-ENV stderr /dev/stderr
+FROM circleci/php:7.3-node-browsers
+FROM circleci/redis:latest
+FROM circleci/mysql:5.7
 
-# Install packages
-RUN apk add --update \
---repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
---repository http://dl-cdn.alpinelinux.org/alpine/edge/community
+LABEL maintainer="Eliurkis Diaz <eliurkis@gmail.com>"
 
-RUN apk --no-cache add \
-  php7 \
-  php7-cli \
-  php7-ctype \
-  php7-curl \
-  php7-dom \
-  php7-fpm \
-  php7-gd \
-  php7-intl \
-  php7-json \
-  php7-mbstring \
-  php7-mysqli \
-  php7-odbc \
-  php7-openssl \
-  php7-pdo \
-  php7-phar \
-  php7-session \
-  php7-sockets \
-  php7-tokenizer \
-  php7-xmlreader \
-  php7-xml \
-  php7-zlib \
-  nginx \
-  supervisor \
-  curl
+RUN sudo apt-get update && sudo apt-get install -y libsqlite3-dev zlib1g-dev libpng-dev libxss1 \
+    && sudo docker-php-ext-install -j$(nproc) zip gd pdo_mysql exif bcmath sockets
 
+## Install libpng12
+RUN sudo wget http://nl.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb
+RUN sudo dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
 
-# Configure nginx
-COPY nginx/conf.d/vhosts.conf /etc/nginx/conf.d
-COPY nginx/* /etc/nginx/
-# Remove default server definition
-RUN rm /etc/nginx/conf.d/default.conf
-
-# Configure PHP-FPM
-COPY php-fpm/php-fpm.conf /etc/php7/php-fpm.conf
-COPY php-fpm/www.conf /etc/php7/php-fpm.d/www.conf
-RUN mkdir -p /var/log/php-fpm && \
-  mkdir -p /run/php-fpm && \
-  chown -R nobody:nobody /run/php-fpm && \
-  chown -R nobody:nobody /var/log/php-fpm
-
-# Configure supervisord
-COPY supervisor/conf.d/* /etc/supervisor/conf.d/
-COPY supervisor/supervisord.conf /etc/supervisor/
-RUN mkdir -p /var/log/supervisor && \
-  touch /var/log/supervisor/supervisord.log && \
-  chown -R nobody:nobody /var/log/supervisor
-
-# Setup document root
-RUN mkdir -p /var/www/php
-
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody:nobody /var/www/php && \
-  chown -R nobody:nobody /run && \
-  chown -R nobody:nobody /var/lib/nginx && \
-  chown -R nobody:nobody /var/log/nginx
-
-# Make sure that logs are redirected to stderr
-RUN ln -sf $stdout /var/log/nginx/access.log && \
-      ln -sf $stderr /var/log/nginx/error.log && \
-      ln -sf $stderr /var/log/php-fpm/www-error.log
-
-WORKDIR /var/www/php
-
-# Expose the port nginx is reachable on
-EXPOSE 80 443
-
-COPY ./init.sh /init.sh
-RUN chmod +x /init.sh
-# Let supervisord start nginx & php-fpm
-CMD ["/bin/sh", "-c", "/init.sh"]
+RUN sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
