@@ -1,4 +1,4 @@
-FROM circleci/php:7.3-node-browsers
+FROM circleci/php:7.3.7-stretch
 LABEL maintainer="Eliurkis Diaz <eliurkis@gmail.com>"
 
 RUN sudo apt-get update && sudo apt-get install -y libsqlite3-dev zlib1g-dev libpng-dev libxss1 \
