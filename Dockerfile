@@ -1,7 +1,7 @@
 FROM circleci/php:7.3.7-stretch
 LABEL maintainer="Eliurkis Diaz <eliurkis@gmail.com>"
 
-RUN sudo apt-get update && sudo apt-get install -y libsqlite3-dev zlib1g-dev libpng-dev libxss1 libjpeg62 \
+RUN sudo apt-get update && sudo apt-get install -y libsqlite3-dev zlib1g-dev libpng-dev libxss1 libjpeg62 libfontconfig1 libxrender1 \
     && sudo docker-php-ext-install -j$(nproc) zip gd pdo_mysql exif bcmath sockets
 
 ## Install libpng12
