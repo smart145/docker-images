@@ -4,7 +4,7 @@ LABEL maintainer="Eliurkis Diaz <eliurkis@gmail.com>"
 RUN sudo apt-get update && \
     sudo apt-get install -yq --no-install-recommends \
     libsqlite3-dev zlib1g-dev libpng-dev libxss1 libjpeg62 \
-    libfontconfig1 libxrender1 libXcomposite \
+    libfontconfig1 libxrender1 libxcomposite-dev \
     && sudo docker-php-ext-install -j$(nproc) zip gd pdo_mysql exif bcmath sockets
 
 ## Install libpng12
