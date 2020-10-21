@@ -1,4 +1,4 @@
-FROM circleci/php:7.3.7-stretch
+FROM circleci/php:7.4.11
 LABEL maintainer="Eliurkis Diaz <eliurkis@gmail.com>"
 
 RUN sudo apt-get update && \
