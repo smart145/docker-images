@@ -6,6 +6,7 @@ RUN sudo apt-get update && \
     libsqlite3-dev zlib1g-dev libpng-dev libxss1 libjpeg62 \
     libfontconfig1 libxrender1 libxcomposite-dev libxcursor1 libxi6 libgconf-2-4 \
     libxtst6 libnss3 libgdk-pixbuf2.0-0 libgtk-3-0 libasound2 \
+    && sudo pecl install pcov && sudo docker-php-ext-enable pcov \
     && sudo docker-php-ext-install -j$(nproc) zip gd pdo_mysql exif bcmath sockets pcntl
 
 ## Install libpng12
