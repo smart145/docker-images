@@ -16,5 +16,5 @@ RUN sudo dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
 RUN sudo rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 ## Install Node
-RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 RUN sudo apt-get install -y nodejs
