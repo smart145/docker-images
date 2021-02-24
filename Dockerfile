@@ -3,7 +3,7 @@ LABEL maintainer="Eliurkis Diaz <eliurkis@gmail.com>"
 
 RUN sudo apt-get update && \
     sudo apt-get install -yq --no-install-recommends \
-    libsqlite3-dev zlib1g-dev libpng-dev libxss1 libjpeg62 \
+    libsqlite3-dev zlib1g-dev libpng-dev libxss1 libjpeg62 libgbm-dev \
     libfontconfig1 libxrender1 libxcomposite-dev libxcursor1 libxi6 libgconf-2-4 \
     libxtst6 libnss3 libgdk-pixbuf2.0-0 libgtk-3-0 libasound2 \
     && sudo pecl install pcov && sudo docker-php-ext-enable pcov \
