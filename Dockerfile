@@ -103,6 +103,13 @@ RUN sed -i '14 a client_header_buffer_size 64k;' /etc/nginx/nginx.conf
 
 WORKDIR /var/www/php
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN composer -V
+
+RUN npm install -g npm@6.14.10
+RUN node -v \
+  npm -v
+
 # Expose the port nginx is reachable on
 EXPOSE 80 443
 
