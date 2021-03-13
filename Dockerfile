@@ -49,7 +49,12 @@ RUN apk --no-cache add \
   curl \
   git \
   nodejs \
-  npm
+  npm \
+  libzip-dev \
+  libpng-dev \
+  zip
+
+RUN docker-php-ext-install zip gd pdo_mysql exif bcmath sockets pcntl
 
 # Update nginx configuration
 COPY configs/nginx/conf.d/vhosts.conf /etc/nginx/conf.d
@@ -119,3 +124,4 @@ RUN chmod +x /bootstrap.sh
 CMD ["/bin/sh", "-c", "/bootstrap.sh"]
 
 RUN php -v
+RUN php -m
