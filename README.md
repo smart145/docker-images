@@ -21,7 +21,9 @@ RUN php artisan config:cache \
     && chown -hR nobody:nobody /var/www/php
 
 # Cron for Laravel scheduler
-COPY ./docker/cron/task-scheduler.crontab /etc/cron.d/task-scheduler
+RUN mkdir /etc/cron.d
+RUN touch /etc/cron.d/task-scheduler
+RUN echo "* * * * * php /var/www/php/artisan schedule:run >> /proc/1/fd/1 2>>/proc/1/fd/2" >> /etc/cron.d/task-scheduler
 RUN chmod 0644 /etc/cron.d/task-scheduler
 RUN crontab /etc/cron.d/task-scheduler
 RUN crond restart
